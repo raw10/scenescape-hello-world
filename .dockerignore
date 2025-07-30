@@ -1,0 +1,25 @@
+# Git and version control
+.git
+.gitignore
+
+# User environment files
+.env.local
+
+# Python cache
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Documentation
+README.md

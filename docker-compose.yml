@@ -1,0 +1,40 @@
+services:
+  hello-world:
+    build: 
+      context: .
+      args:
+        - HTTP_PROXY=${HTTP_PROXY}
+        - HTTPS_PROXY=${HTTPS_PROXY}
+        - NO_PROXY=${NO_PROXY}
+        - http_proxy=${http_proxy}
+        - https_proxy=${https_proxy}
+        - no_proxy=${no_proxy}
+    container_name: scenescape-hello-world
+    network_mode: host  # Allow container to access host network directly
+    env_file:
+      - .env.local  # Copy .env.docker.example to .env.local and set your values
+    environment:
+      # Override specific values here if needed
+      - SCENESCAPE_AUTH_FILE=/app/secrets/controller.auth
+      - DOCKER_CONTAINER=true  # Flag to indicate we're running in Docker
+    volumes:
+      # Mount application code for development (allows live editing)
+      - ./hello_world.py:/app/hello_world.py:ro
+      - ./config.json:/app/config.json:ro
+      # Mount secrets directory (read-only, never copied into image)
+      - ./secrets:/app/secrets:ro
+    restart: unless-stopped
+    
+    # Connect to SceneScape network if running with SceneScape stack
+    # Uncomment the networks section below if using with existing SceneScape deployment
+    # networks:
+    #   - default
+    #   - scenescape_scenescape
+
+# For production deployment, create a separate docker-compose.prod.yml
+# that copies code into the image instead of volume mounting
+
+# Uncomment if connecting to existing SceneScape network
+# networks:
+#   scenescape_scenescape:
+#     external: true
